@@ -2,8 +2,27 @@
 <html>
     <head>
         <title>State practice</title>
+        <style>
+            .home {
+                display: none
+            }
+            .world {
+                display: none;
+            }
+            .main  {
+                display: none;
+            }
+        </style>
     </head>
     <body>
+        <div class="gameobject place home">Home</div>
+        <div class="gameobject place world">World</div>
+        <div class="gameobject menu main">Main menu</div>
+        <div class="control">
+            <button onclick="test_enter(event, 'home')">Home</button>
+            <button onclick="test_enter(event, 'world')">World</button>
+            <button onclick="test_enter(event, 'main')">Main menu</button> 
+        </div>
         <script src="helpers.js?ver=1.0"></script>
         <script src="main.js?ver=1.0"></script>
     </body>

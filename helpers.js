@@ -1,22 +1,34 @@
-function State(name) {
-    this.name = name;
-    this.data = null;
-    this.Render = function() {
-        console.log(`${this.name}: ${this.data}`);
+class State {
+    constructor(name) {
+        this.name = name;
+        const selector = "." + name;
+        this.element = document.querySelector(selector);
     }
-    this.Update = function(data) {
+    Render() {
+        const e_style = window.getComputedStyle(this.element); // css에 세팅된 값을 읽어온다
+        const is_invisible = e_style.getPropertyValue("display") == "none"; // css에 세팅된 값은 inline 값 element.style.display 와 다르기 때문에.
+        if(is_invisible) {
+            this.element.style.display = "block";
+        }
+    }
+    Update(data) {
         this.data = data;
     }
-    this.OnEnter = () => { console.log(`${this.name} enter...`)};
-    this.OnLeave = () => { console.log(`${this.name} leave...`)};
+    OnEnter = () => { console.log(`${this.name} enter...`)};
+    OnLeave = () => { 
+        console.log(`${this.name} leave...`)
+        this.element.style.display = "none";
+    };
 }
 
-function StateManager() {
-    this.current_state = null;
-    this.states = [];
-    this.map = new Map();
-    this.top = -1;
-    this.Change = function(state) {
+class StateManager {
+    constructor() {
+        this.current_state = null;
+        this.states = [];
+        this.map = new Map();
+        this.top = -1;
+    }
+    Change(state) {
         if(this.top <= -1) {
             this.states[++this.top] = state;
             this.current_state = this.states[this.top];
@@ -27,18 +39,18 @@ function StateManager() {
         }
         this.current_state.OnEnter();
     }
-    this.Render = function() {
+    Render() {
         this.current_state.Render();
     }
-    this.Update = function(data) {
+    Update(data) {
         this.current_state.Update(data);
     }
-    this.Push = function(state) {
+    Push(state) {
         this.states[++this.top] = state;
         this.current_state = this.states[this.top];
         this.states[this.top].OnEnter();
     }
-    this.Pop = function() {
+    Pop() {
         this.states[this.top--].OnLeave();
         if(this.top <= -1) {
             return 
