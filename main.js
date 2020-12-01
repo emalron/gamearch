@@ -36,12 +36,6 @@ world_state.Update = function(key) {
     }
 }
 
-/*
-    Scenario
-    Home, menu -> Main Menu, close -> Home, world -> World, menu
-    -> Main menu, item -> Item, buy -> Item, close -> Main Menu, close
-    -> World, home -> Home
-*/
 function test_enter(e, place) {
     enter(place);
     sManager.Render();
@@ -57,3 +51,36 @@ function enter(place) {
             break;
     }
 }
+
+let player = new Player("Jes");
+let sword = new Item("Sword", 5);
+player.items.push(sword);
+
+let monster = new Monster("Orc", 20, 2, 1, 0);
+
+function combat(player, monster) {
+    let combatants = [player, monster];
+    let turn = 0;
+    let side = 0;
+    while(player.hp > 0 && monster.hp > 0) {
+        side = turn % 2;
+        let attacker = combatants[side];
+        let defender = combatants[(side+1)%2];
+        let damage = attacker.GetPower();
+        defender.TakeDamage(damage);
+        console.log(`${attacker.name} attacked: ${defender.name} has ${defender.hp} Hit points`)
+        turn++;
+    }
+    let player_win = monster.hp <= 0 && player.hp > 0;
+    if(player_win) {
+        player.xp += monster.xp;
+        const token_ = monster.GetToken();
+        player.token += token_;
+        console.log(`${player.name} got ${monster.xp} XP`)
+        if(token_ > 0) 
+            console.log(`${player.name} got ${token_} tokens`)
+    }
+    return;
+}
+
+combat(player, monster);
