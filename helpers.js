@@ -60,8 +60,29 @@ class StateManager {
 }
 
 class Observer {
-    constructor() {
-
-    }
+    constructor() {}
     Notify() {}
 }
+
+class Combat {
+    process(actors) {
+        let [player, monster] = actors;
+        let result = this.battle(player, monster);
+        if(result) {
+            reward(player, monster);
+        } else {
+            penalty(player);
+        }
+    }
+    battle(player, monster) {
+
+    }
+    reward(player, monster) {
+
+    }
+    penalty(player) {
+
+    }
+}
+
+export {State, StateManager, Observer};

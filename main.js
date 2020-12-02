@@ -1,3 +1,7 @@
+import {State, StateManager} from './helpers.js';
+import {Player, Item, Monster} from './characters.js';
+import {combatNews} from './watchers.js';
+
 let main_menu_state = new State("main");
 let home_state = new State("home");
 let world_state = new State("world");
@@ -32,22 +36,6 @@ world_state.Update = function(key) {
             break;
         case 'home':
             sManager.Change(home_state);
-            break;
-    }
-}
-
-function test_enter(e, place) {
-    enter(place);
-    sManager.Render();
-}
-
-function enter(place) {
-    switch(place) {
-        case 'home':
-            sManager.Change(home_state);
-            break;
-        case 'world':
-            sManager.Change(world_state);
             break;
     }
 }

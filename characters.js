@@ -68,3 +68,5 @@ class Boss extends Entity {
         return this.power;
     }
 }
+
+export {Player, Item, Monster};

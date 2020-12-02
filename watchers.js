@@ -1,3 +1,5 @@
+import {Observer} from './helpers.js'
+
 let combatNews = new Observer();
 
 combatNews.Notify = (msg) => {
@@ -18,3 +20,5 @@ combatNews.Notify = (msg) => {
             break;
     }
 }
+
+export {combatNews};

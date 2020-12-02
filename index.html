@@ -2,17 +2,7 @@
 <html>
     <head>
         <title>State practice</title>
-        <style>
-            .home {
-                display: none
-            }
-            .world {
-                display: none;
-            }
-            .main  {
-                display: none;
-            }
-        </style>
+        <link rel="stylesheet" href="main.css">
     </head>
     <body>
         <div class="gameobject place home">Home</div>
@@ -23,9 +13,6 @@
             <button onclick="test_enter(event, 'world')">World</button>
             <button onclick="test_enter(event, 'main')">Main menu</button> 
         </div>
-        <script src="helpers.js?ver=1.0"></script>
-        <script src="watchers.js"></script>
-        <script src="characters.js"></script>
-        <script src="main.js?ver=1.0"></script>
+        <script type="module" src="main.js?ver=1.0"></script>
     </body>
 </html>
