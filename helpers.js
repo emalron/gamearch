@@ -58,3 +58,10 @@ class StateManager {
         this.current_state = this.states[this.top];
     }
 }
+
+class Observer {
+    constructor() {
+
+    }
+    Notify() {}
+}

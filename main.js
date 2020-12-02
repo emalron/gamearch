@@ -68,17 +68,15 @@ function combat(player, monster) {
         let defender = combatants[(side+1)%2];
         let damage = attacker.GetPower();
         defender.TakeDamage(damage);
-        console.log(`${attacker.name} attacked: ${defender.name} has ${defender.hp} Hit points`)
         turn++;
+        combatNews.Notify({type: 'ATTACK', actors: [attacker.name, defender.name], detail: {damage: damage, hp: defender.hp}});
     }
     let player_win = monster.hp <= 0 && player.hp > 0;
     if(player_win) {
+        let token_ = monster.GetToken();
         player.xp += monster.xp;
-        const token_ = monster.GetToken();
         player.token += token_;
-        console.log(`${player.name} got ${monster.xp} XP`)
-        if(token_ > 0) 
-            console.log(`${player.name} got ${token_} tokens`)
+        combatNews.Notify({type: 'KILL', actors: [player.name, monster.name], detail: {xp: monster.xp, token: token_}});
     }
     return;
 }
