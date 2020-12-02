@@ -7,11 +7,16 @@
     <body>
         <div class="gameobject place home">Home</div>
         <div class="gameobject place world">World</div>
-        <div class="gameobject menu main">Main menu</div>
+        <div class="gameobject modal main">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <p>Main menu</p>
+            </div>
+        </div>
         <div class="control">
-            <button onclick="test_enter(event, 'home')">Home</button>
-            <button onclick="test_enter(event, 'world')">World</button>
-            <button onclick="test_enter(event, 'main')">Main menu</button> 
+            <button>Home</button>
+            <button>World</button>
+            <button>Main menu</button> 
         </div>
         <script type="module" src="main.js?ver=1.0"></script>
     </body>

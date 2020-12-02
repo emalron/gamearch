@@ -64,25 +64,9 @@ class Observer {
     Notify() {}
 }
 
-class Combat {
-    process(actors) {
-        let [player, monster] = actors;
-        let result = this.battle(player, monster);
-        if(result) {
-            reward(player, monster);
-        } else {
-            penalty(player);
-        }
-    }
-    battle(player, monster) {
-
-    }
-    reward(player, monster) {
-
-    }
-    penalty(player) {
-
-    }
+class Visitor {
+    constructor() {}
+    accept() {}
 }
 
 export {State, StateManager, Observer};

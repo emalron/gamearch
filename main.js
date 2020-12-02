@@ -28,6 +28,10 @@ main_menu_state.Update = function(key) {
             break;
     }
 }
+main_menu_state.Render = function() {
+    console.log(this.element);
+    this.element.style.display = "block";
+}
 
 world_state.Update = function(key) {
     switch(key) {
@@ -39,6 +43,31 @@ world_state.Update = function(key) {
             break;
     }
 }
+
+let places = [
+    () => { sManager.Change(home_state); },
+    () => { sManager.Change(world_state); },
+    () => { 
+        sManager.Push(main_menu_state);
+    },
+]
+
+// button settings
+let buttons = document.querySelectorAll("div.control button");
+for(let i=0; i<3; i++) {
+    buttons[i].addEventListener("click", () => {
+        places[i]();
+        sManager.Render();
+    })
+}
+let modal_close_button = document.querySelectorAll("span.close");
+modal_close_button.forEach(e => {
+    e.addEventListener("click", () => {
+        let modal = e.parentElement.parentElement;
+        modal.style.display = "none";
+        sManager.Pop(); // 하 ... 커플링 넘 심한데 어떻게 고쳐야되지??? 일단 ㄱ
+    })
+})
 
 let player = new Player("Jes");
 let sword = new Item("Sword", 5);
