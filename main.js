@@ -1,73 +1,6 @@
-import {State, StateManager} from './helpers.js';
-import {Player, Item, Monster} from './characters.js';
-import {combatNews} from './watchers.js';
-
-let main_menu_state = new State("main");
-let home_state = new State("home");
-let world_state = new State("world");
-const sManager = new StateManager();
-
-home_state.Update = function(key) {
-    switch(key) {
-        case 'menu': // open main menu
-            sManager.Push(main_menu_state);
-            break;
-        case 'world': // enter the world
-            sManager.Change(world_state);
-            break;
-    }
-}
-
-main_menu_state.Update = function(key) {
-    switch(key) {
-        case 'close': // close main menu
-            sManager.Pop();
-            break;
-        case 'item': // open item menu
-            sManager.Push(item_menu_state);
-            break;
-    }
-}
-main_menu_state.Render = function() {
-    console.log(this.element);
-    this.element.style.display = "block";
-}
-
-world_state.Update = function(key) {
-    switch(key) {
-        case 'menu':
-            sManager.Push(main_menu_state);
-            break;
-        case 'home':
-            sManager.Change(home_state);
-            break;
-    }
-}
-
-let places = [
-    () => { sManager.Change(home_state); },
-    () => { sManager.Change(world_state); },
-    () => { 
-        sManager.Push(main_menu_state);
-    },
-]
-
-// button settings
-let buttons = document.querySelectorAll("div.control button");
-for(let i=0; i<3; i++) {
-    buttons[i].addEventListener("click", () => {
-        places[i]();
-        sManager.Render();
-    })
-}
-let modal_close_button = document.querySelectorAll("span.close");
-modal_close_button.forEach(e => {
-    e.addEventListener("click", () => {
-        let modal = e.parentElement.parentElement;
-        modal.style.display = "none";
-        sManager.Pop(); // 하 ... 커플링 넘 심한데 어떻게 고쳐야되지??? 일단 ㄱ
-    })
-})
+import {sManager, home_state} from "./states.js";
+import {Player, Monster, Item} from "./characters.js";
+import {combatNews} from "./watchers.js";
 
 let player = new Player("Jes");
 let sword = new Item("Sword", 5);
@@ -98,4 +31,7 @@ function combat(player, monster) {
     return;
 }
 
+
+sManager.Change(home_state);
+sManager.Render();
 combat(player, monster);

@@ -2,22 +2,30 @@
 <html>
     <head>
         <title>State practice</title>
-        <link rel="stylesheet" href="main.css">
+        <link rel="stylesheet" href="main.css?ver=1.0">
     </head>
     <body>
         <div class="gameobject place home">Home</div>
         <div class="gameobject place world">World</div>
         <div class="gameobject modal main">
             <div class="modal-content">
-                <span class="close">&times;</span>
+                <span class="modal-close">&times;</span>
                 <p>Main menu</p>
+                <button id="item-menu">Item menu</button>
+            </div>
+        </div>
+        <div class="gameobject modal item">
+            <div class="modal-content">
+                <span class="modal-close">&times;</span>
+                <p>Item menu</p>
             </div>
         </div>
         <div class="control">
-            <button>Home</button>
-            <button>World</button>
-            <button>Main menu</button> 
+            <button id="home">Home</button>
+            <button id="world">World</button>
+            <button id="main-menu">Main menu</button> 
         </div>
+        <script type="module" src="init.js"></script>
         <script type="module" src="main.js?ver=1.0"></script>
     </body>
 </html>
