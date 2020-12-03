@@ -27,6 +27,8 @@ class Player extends Entity {
         this.xp = 0;
         this.token = 0;
         this.items = [];
+        this.key = 0;
+        this.gold = 0;
     }
     GetPower() {
         return this.items.map(e=>e.power).reduce((acc,cur) => acc+cur);
@@ -56,6 +58,19 @@ class Monster extends Entity {
     }
 }
 
+class MonsterFactory {
+    constructor() {}
+    static Generate(name) {
+        let monster = null;
+        switch(name) {
+            case "Orc":
+                monster = new Monster(name, 10, 2, 1, 0);
+                break;
+        }
+        return monster;
+    }
+}
+
 class Boss extends Entity {
     constructor(name, hp, power, xp, key) {
         super(hp)
@@ -69,4 +84,4 @@ class Boss extends Entity {
     }
 }
 
-export {Player, Item, Monster};
+export {Player, Item, MonsterFactory};

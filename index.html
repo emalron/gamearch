@@ -6,12 +6,24 @@
     </head>
     <body>
         <div class="gameobject place home">
-            <p><button>Home</button> - Restore HP</p>
-            <p><button>Hunting</button> - Work! work!</p>
-            <p><button>Guild</button> - Make money</p>
-            <p><button>Blacksmith</button> - Enhance your weapon</p>
-            <p><button id="world">World</button> - To the world!</p>
-            <p><button id="main-menu">Main menu</button></p>
+            <div class="home-facility">
+                <p><button>Home</button> - Restore HP</p>
+                <p><button id="hunting">Hunting</button> - Work! work!</p>
+                <p><button>Guild</button> - Make money</p>
+                <p><button>Blacksmith</button> - Enhance your weapon</p>
+                <p><button id="world">World</button> - To the world!</p>
+                <p><button id="main-menu">Main menu</button></p>
+            </div>
+            <div class="player-stat">
+                <span>Name: <span class="name"></span></span><br>
+                <span>HP: <span class="hp"></span></span><br>
+                <span>Power: <span class="power"></span></span><br>
+                <span>XP: <span class="xp"></span></span><br>
+                <span>Item: <span class="item"></span></span><br>
+                <span>Gold: <span class="gold"></span></span><br>
+                <span>Token: <span class="token"></span></span><br>
+                <span>Key: <span class="key"></span></span>
+            </div>
         </div>
         <div class="gameobject place world">
             <p>World</p>
@@ -32,7 +44,6 @@
                 <p>Item menu</p>
             </div>
         </div>
-        <script type="module" src="init.js"></script>
-        <script type="module" src="main.js?ver=1.0"></script>
+        <script type="module" src="main.js"></script>
     </body>
 </html>

@@ -1,37 +1,54 @@
 import {sManager, home_state} from "./states.js";
-import {Player, Monster, Item} from "./characters.js";
-import {combatNews} from "./watchers.js";
+import {statMonitor} from "./watchers.js";
+import {combatManager} from "./combat.js";
+import {Player, Item} from "./characters.js";
 
 let player = new Player("Jes");
 let sword = new Item("Sword", 5);
 player.items.push(sword);
 
-let monster = new Monster("Orc", 20, 2, 1, 0);
-
-function combat(player, monster) {
-    let combatants = [player, monster];
-    let turn = 0;
-    let side = 0;
-    while(player.hp > 0 && monster.hp > 0) {
-        side = turn % 2;
-        let attacker = combatants[side];
-        let defender = combatants[(side+1)%2];
-        let damage = attacker.GetPower();
-        defender.TakeDamage(damage);
-        turn++;
-        combatNews.Notify({type: 'ATTACK', actors: [attacker.name, defender.name], detail: {damage: damage, hp: defender.hp}});
-    }
-    let player_win = monster.hp <= 0 && player.hp > 0;
-    if(player_win) {
-        let token_ = monster.GetToken();
-        player.xp += monster.xp;
-        player.token += token_;
-        combatNews.Notify({type: 'KILL', actors: [player.name, monster.name], detail: {xp: monster.xp, token: token_}});
-    }
-    return;
-}
-
-
 sManager.Change(home_state);
 sManager.Render();
-combat(player, monster);
+statMonitor.Notify(player)
+combatManager.SetPlayer(player);
+
+let home_button = document.querySelector("button#home");
+home_button.addEventListener("click", () => {
+    sManager.Update('home');
+    sManager.Render();
+})
+
+let world_button = document.querySelector("button#world");
+world_button.addEventListener("click", () => {
+    sManager.Update('world');
+    sManager.Render();
+})
+
+let main_menu_button = document.querySelector("button#main-menu");
+main_menu_button.addEventListener("click", () => {
+    sManager.Update('main');
+    sManager.Render();
+})
+
+let item_menu_button = document.querySelector("button#item-menu");
+item_menu_button.addEventListener("click", () => {
+    sManager.Update('item');
+    sManager.Render();
+})
+
+let modal_close_button = document.querySelectorAll("span.modal-close");
+modal_close_button.forEach(e => {
+    e.addEventListener("click", () => {
+        sManager.Update('close');
+    })
+})
+
+let hunting_button = document.querySelector("button#hunting");
+console.log(hunting_button);
+hunting_button.addEventListener("click", () => {
+    combatHunting();
+});
+
+function combatHunting() {
+    combatManager.Combat("Orc");
+}

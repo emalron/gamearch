@@ -64,9 +64,40 @@ class Observer {
     Notify() {}
 }
 
-class Visitor {
-    constructor() {}
-    accept() {}
+class Monitor extends Observer {
+    constructor() {
+        super()
+        this.map = new Map();
+    }
+    Set(name, element) {
+        this.map.set(name, element);
+    }
+    Update(stats) {
+        console.log(this.map);
+        for(let key of stats.keys()) {
+            let value = stats.get(key);
+            let elem = this.map.get(key);
+            elem.textContent = value;
+            console.log(`${key} ${value}`)
+            console.log(elem)
+        }
+    }
+    Notify(player) {
+        let {name: name, hp: hp, xp: xp, items: [item], gold: gold, token: token, key: key} = player;
+        let power = player.GetPower();
+        let data = new Map();
+        data.set("name", name);
+        data.set("hp", hp);
+        data.set("power", power);
+        data.set("xp", xp);
+        data.set("item", item.name);
+        data.set("gold", gold);
+        data.set("token", token);
+        data.set("key", key);
+        console.log(player);
+        console.log(this);
+        this.Update(data);
+    }
 }
 
-export {State, StateManager, Observer};
+export {State, StateManager, Observer, Monitor};
