@@ -21,13 +21,13 @@ combatNews.Notify = (msg) => {
 }
 
 let statMonitor = new Monitor();
-statMonitor.Set("name", document.querySelector("div.player-stat span.name"))
-statMonitor.Set("hp", document.querySelector("div.player-stat span.hp"))
-statMonitor.Set("power", document.querySelector("div.player-stat span.power"))
-statMonitor.Set("xp", document.querySelector("div.player-stat span.xp"))
-statMonitor.Set("item", document.querySelector("div.player-stat span.item"))
-statMonitor.Set("gold", document.querySelector("div.player-stat span.gold"))
-statMonitor.Set("token", document.querySelector("div.player-stat span.token"))
-statMonitor.Set("key", document.querySelector("div.player-stat span.key"))
+statMonitor.Set("name", document.querySelector("div.character span.name"))
+statMonitor.Set("hp", document.querySelector("div.character span.hp"))
+statMonitor.Set("power", document.querySelector("div.character span.power"))
+statMonitor.Set("xp", document.querySelector("div.character span.xp"))
+statMonitor.Set("item", document.querySelector("div.character span.item"))
+statMonitor.Set("gold", document.querySelector("div.character span.gold"))
+statMonitor.Set("token", document.querySelector("div.character span.token"))
+statMonitor.Set("key", document.querySelector("div.character span.key"))
 
 export {combatNews, statMonitor};

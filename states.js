@@ -1,50 +1,76 @@
 import {State, StateManager} from "./helpers.js"
 
-let main_menu_state = new State("main");
-let home_state = new State("home");
-let world_state = new State("world");
-let item_menu_state = new State("item");
+const town_state = new State("town");
+const blacksmith_modal_state = new State("blacksmith-modal");
+const guild_modal_state = new State("guild-modal");
+const shop_modal_state = new State("shop-modal");
+const home_modal_state = new State("home-modal");
+const world_state = new State("world");
+const forest_modal_state = new State("forest-modal");
+const cave_modal_state = new State("cave-modal");
+const tower_modal_state = new State("tower-modal");
 const sManager = new StateManager();
-
-home_state.Update = function(key) {
+town_state.Update = (key) => {
     switch(key) {
-        case 'main': // open main menu
-            sManager.Push(main_menu_state);
+        case 'home-modal':
+            sManager.Push(home_modal_state);
             break;
-        case 'world': // enter the world
+        case 'shop-modal':
+            sManager.Push(shop_modal_state);
+            break;
+        case 'guild-modal':
+            sManager.Push(guild_modal_state);
+            break;
+        case 'blacksmith-modal':
+            sManager.Push(blacksmith_modal_state);
+            break;
+        case 'world':
             sManager.Change(world_state);
             break;
     }
 }
-
-main_menu_state.Update = function(key) {
+world_state.Update = (key) => {
     switch(key) {
-        case 'close': // close main menu
+        case 'forest-modal':
+            sManager.Push(forest_modal_state);
+            break;
+        case 'cave-modal':
+            sManager.Push(cave_modal_state);
+            break;
+        case 'tower-modal':
+            sManager.Push(tower_modal_state);
+            break;
+        case 'town':
+            sManager.Change(town_state);
+            break;
+    }
+}
+home_modal_state.Update = (key) => {
+    switch(key) {
+        case 'close':
             sManager.Pop();
             break;
-        case 'item': // open item menu
-            sManager.Push(item_menu_state);
-            break;
     }
 }
-
-item_menu_state.Update = function(key) {
+forest_modal_state.Update = (key) => {
     switch(key) {
-        case 'close': // close main menu
+        case 'close':
             sManager.Pop();
             break;
     }
 }
-
-world_state.Update = function(key) {
+cave_modal_state.Update = (key) => {
     switch(key) {
-        case 'main':
-            sManager.Push(main_menu_state);
-            break;
-        case 'home':
-            sManager.Change(home_state);
+        case 'close':
+            sManager.Pop();
             break;
     }
 }
-
-export {sManager, home_state, world_state, main_menu_state, item_menu_state};
+tower_modal_state.Update = (key) => {
+    switch(key) {
+        case 'close':
+            sManager.Pop();
+            break;
+    }
+}
+export {sManager, town_state};

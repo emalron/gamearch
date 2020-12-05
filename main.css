@@ -1,10 +1,17 @@
+main {
+    display: flex;
+}
+
+.character {
+    display: block;
+    width: 30%;
+}
+
+
 .home {
     display: none
 }
 .world {
-    display: none;
-}
-.main  {
     display: none;
 }
 
@@ -39,4 +46,10 @@
     color: black;
     text-decoration: none;
     cursor: pointer;
+}
+.modal-content .combat-main {
+    display: flex;
+}
+.modal-content .combat-close {
+    width: 100%;
 }

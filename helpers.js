@@ -5,6 +5,7 @@ class State {
         this.element = document.querySelector(selector);
     }
     Render() {
+        console.log(this);
         const e_style = window.getComputedStyle(this.element); // css에 세팅된 값을 읽어온다
         const is_invisible = e_style.getPropertyValue("display") == "none"; // css에 세팅된 값은 inline 값 element.style.display 와 다르기 때문에.
         if(is_invisible) {
@@ -73,13 +74,10 @@ class Monitor extends Observer {
         this.map.set(name, element);
     }
     Update(stats) {
-        console.log(this.map);
         for(let key of stats.keys()) {
             let value = stats.get(key);
             let elem = this.map.get(key);
             elem.textContent = value;
-            console.log(`${key} ${value}`)
-            console.log(elem)
         }
     }
     Notify(player) {
@@ -94,8 +92,6 @@ class Monitor extends Observer {
         data.set("gold", gold);
         data.set("token", token);
         data.set("key", key);
-        console.log(player);
-        console.log(this);
         this.Update(data);
     }
 }

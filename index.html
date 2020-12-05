@@ -5,43 +5,99 @@
         <link rel="stylesheet" href="main.css?ver=1.0">
     </head>
     <body>
-        <div class="gameobject place home">
-            <div class="home-facility">
-                <p><button>Home</button> - Restore HP</p>
-                <p><button id="hunting">Hunting</button> - Work! work!</p>
-                <p><button>Guild</button> - Make money</p>
-                <p><button>Blacksmith</button> - Enhance your weapon</p>
-                <p><button id="world">World</button> - To the world!</p>
-                <p><button id="main-menu">Main menu</button></p>
+        <main>
+            <div class="character">
+                <h1>You are... <span class="name"></span></h1>
+                <p>
+                    <span>Hit Points: <span class="hp"></span></span><br>
+                    <span>Power: <span class="power"></span></span><br>
+                    <span>XP: <span class="xp"></span></span><br>
+                    <span>Item: <span class="item"></span></span><br>
+                    <span>Gold: <span class="gold"></span></span><br>
+                    <span>Token: <span class="token"></span></span><br>
+                    <span>Key: <span class="key"></span></span>
+                </p>
             </div>
-            <div class="player-stat">
-                <span>Name: <span class="name"></span></span><br>
-                <span>HP: <span class="hp"></span></span><br>
-                <span>Power: <span class="power"></span></span><br>
-                <span>XP: <span class="xp"></span></span><br>
-                <span>Item: <span class="item"></span></span><br>
-                <span>Gold: <span class="gold"></span></span><br>
-                <span>Token: <span class="token"></span></span><br>
-                <span>Key: <span class="key"></span></span>
+            <div class="places">
+                <div class="gameobject place town">
+                    <h1>Town</h1>
+                    <p><button id="home">Home</button> - Restore HP</p>
+                    <p><button id="shop">Shop</button> - Water and breads</p>
+                    <p><button>Guild</button> - Make money</p>
+                    <p><button>Blacksmith</button> - Enhance your weapon</p>
+                    <p><button id="world">World</button> - To the world!</p>
+                </div>
+                <div class="gameobject place world">
+                    <h1>World</h1>
+                    <p><button id="forest">Forest</button> - hunting things</p>
+                    <p><button id="cave">Cave</button> - Reveal the secret</p>
+                    <p><button id="tower">Tower</button> - Face the fear</p>
+                    <p><button id="town">Town</button> - Home, sweet home.</p>
+                </div>
+            </div>
+        </main>
+        <div class="gameobject modal home-modal">
+            <div class="modal-content">
+                <span class="modal-close">&times;</span>
+                <h2>Home</h2>
+                <button id="rest">Take a rest</button>
             </div>
         </div>
-        <div class="gameobject place world">
-            <p>World</p>
-            <p><button>Tower</button> - Face the fear</p>
-            <p><button id="home">Home</button> - Home, sweet home.</p>
-            <p><button id="main-menu">Main menu</button></p>
-        </div>
-        <div class="gameobject modal main">
+        <div class="gameobject modal shop-modal">
             <div class="modal-content">
                 <span class="modal-close">&times;</span>
                 <p>Main menu</p>
                 <button id="item-menu">Item menu</button>
             </div>
         </div>
-        <div class="gameobject modal item">
+        <div class="gameobject modal guild-modal">
             <div class="modal-content">
                 <span class="modal-close">&times;</span>
-                <p>Item menu</p>
+                <h2>Guild</h2>
+                <button id="item-menu">Item menu</button>
+            </div>
+        </div>
+        <div class="gameobject modal blacksmith-modal">
+            <div class="modal-content">
+                <span class="modal-close">&times;</span>
+                <p>Main menu</p>
+                <button id="item-menu">Item menu</button>
+            </div>
+        </div>
+        <div class="gameobject modal forest-modal">
+            <div class="modal-content combat-main">
+                <div class="combat-title">
+                    <span class="modal-close">&times;</span>
+                    <h2>Forest</h2>
+                </div>
+                <div class="combat-main">
+                    
+                </div>
+                <button class="combat-close">Ok...</button>
+            </div>
+        </div>
+        <div class="gameobject modal cave-modal">
+            <div class="modal-content combat-main">
+                <div class="combat-title">
+                    <span class="modal-close">&times;</span>
+                    <h2>Cave</h2>
+                </div>
+                <div class="combat-main">
+                    
+                </div>
+                <button class="combat-close">Ok...</button>
+            </div>
+        </div>
+        <div class="gameobject modal tower-modal">
+            <div class="modal-content combat-main">
+                <div class="combat-title">
+                    <span class="modal-close">&times;</span>
+                    <h2>Tower</h2>
+                </div>
+                <div class="combat-main">
+                    
+                </div>
+                <button class="combat-close">Ok...</button>
             </div>
         </div>
         <script type="module" src="main.js"></script>
