@@ -15,7 +15,7 @@ class State {
     Update(data) {
         this.data = data;
     }
-    OnEnter = () => { console.log(`${this.name} enter...`)};
+    OnEnter = () => { this.element.focus(); console.log(`${this.name} enter...`)};
     OnLeave = () => { 
         console.log(`${this.name} leave...`)
         this.element.style.display = "none";
@@ -61,7 +61,9 @@ class StateManager {
 }
 
 class Observer {
-    constructor() {}
+    constructor() {
+        this.history = "";
+    }
     Notify() {}
 }
 
@@ -77,7 +79,7 @@ class Monitor extends Observer {
         for(let key of stats.keys()) {
             let value = stats.get(key);
             let elem = this.map.get(key);
-            elem.textContent = value;
+            elem.innerText = value;
         }
     }
     Notify(player) {
@@ -92,6 +94,7 @@ class Monitor extends Observer {
         data.set("gold", gold);
         data.set("token", token);
         data.set("key", key);
+        console.log(this);
         this.Update(data);
     }
 }

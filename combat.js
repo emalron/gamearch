@@ -1,4 +1,4 @@
-import {combatNews, statMonitor} from "./watchers.js";
+import {combatNews, statMonitor, combatMonitor} from "./watchers.js";
 import {MonsterFactory} from "./characters.js";
 
 class CombatManager {
@@ -29,8 +29,11 @@ class CombatManager {
             player.xp += monster.xp;
             player.token += token_;
             combatNews.Notify({type: 'KILL', actors: [player.name, monster.name], detail: {xp: monster.xp, token: token_}});
-            statMonitor.Notify(player);
+        } else {
+            combatNews.Notify({type: 'DEFEATED', actors: [player.name]})
         }
+        statMonitor.Notify(player);
+        combatMonitor.Notify(combatNews.Broadcast());
         return;
     }
 }
