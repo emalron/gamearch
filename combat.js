@@ -1,4 +1,4 @@
-import {combatNews, statMonitor, combatMonitor} from "./watchers.js";
+import {statMonitor, combatMonitor} from "./watchers.js";
 import {MonsterFactory} from "./characters.js";
 
 class CombatManager {
@@ -9,9 +9,9 @@ class CombatManager {
         this.player = player;
     }
     Combat(name) {
-        let player = this.player;
-        let monster = MonsterFactory.Generate(name);
-        let combatants = [player, monster];
+        const player = this.player;
+        const monster = MonsterFactory.Generate(name);
+        const combatants = [player, monster];
         let turn = 0;
         let side = 0;
         while(player.hp > 0 && monster.hp > 0) {
@@ -21,19 +21,18 @@ class CombatManager {
             let damage = attacker.GetPower();
             defender.TakeDamage(damage);
             turn++;
-            combatNews.Notify({type: 'ATTACK', actors: [attacker.name, defender.name], detail: {damage: damage, hp: defender.hp}});
+            combatMonitor.Notify({type: 'ATTACK', actors: [attacker.name, defender.name], detail: {damage: damage, hp: defender.hp}});
         }
-        let player_win = monster.hp <= 0 && player.hp > 0;
+        const player_win = monster.hp <= 0 && player.hp > 0;
         if(player_win) {
-            let token_ = monster.GetToken();
+            const token_ = monster.GetToken();
             player.xp += monster.xp;
             player.token += token_;
-            combatNews.Notify({type: 'KILL', actors: [player.name, monster.name], detail: {xp: monster.xp, token: token_}});
+            combatMonitor.Notify({type: 'KILL', actors: [player.name, monster.name], detail: {xp: monster.xp, token: token_}});
         } else {
-            combatNews.Notify({type: 'DEFEATED', actors: [player.name]})
+            combatMonitor.Notify({type: 'DEFEATED', actors: [player.name]})
         }
         statMonitor.Notify(player);
-        combatMonitor.Notify(combatNews.Broadcast());
         return;
     }
 }

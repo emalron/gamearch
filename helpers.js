@@ -59,12 +59,9 @@ class StateManager {
 }
 
 class Observer {
-    constructor() {
-        this.history = "";
-    }
+    constructor() {}
     Notify() {}
 }
-
 class Monitor extends Observer {
     constructor() {
         super()

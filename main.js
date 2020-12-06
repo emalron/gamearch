@@ -1,5 +1,5 @@
 import {sManager, town_state} from "./states.js";
-import {combatMonitor, combatNews, statMonitor} from "./watchers.js";
+import {combatMonitor, statMonitor} from "./watchers.js";
 import {combatManager} from "./combat.js";
 import {Player, Item} from "./characters.js";
 
@@ -56,7 +56,6 @@ combat_close_button.forEach(e => {
     })
 })
 
-combatHunting();
 function combatHunting() {
     combatManager.Combat("Orc");
 }

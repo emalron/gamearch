@@ -10,14 +10,6 @@ class Entity {
         }
         this.hp -= actual_damage;
     }
-    Subscribe(observer) {
-        this.subscribes.push(observer);
-    }
-    OnNotify(msg) {
-        this.subscribes.forEach(e => {
-            e.Notify(msg);
-        })
-    }
 }
 
 class Player extends Entity {
