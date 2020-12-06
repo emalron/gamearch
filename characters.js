@@ -36,7 +36,8 @@ class Item {
 }
 
 class Monster extends Entity {
-    constructor(name, hp, power, xp, token) {
+    constructor(monster) {
+        let {name: name, hp: hp, power: power, xp: xp, token: token} = monster;
         super(hp);
         this.name = name;
         this.power = power;
@@ -47,7 +48,17 @@ class Monster extends Entity {
         return this.power;
     }
     GetToken() {
-        return this.token;
+        const random = this.getRandomArbitary(0, 10);
+        const win = this.xp >= random;
+        if(win) {
+            return this.token;
+        }
+        return 0;
+    }
+    getRandomArbitary(min, max) {
+        const min_ = Math.ceil(min);
+        const max_ = Math.floor(max);
+        return Math.floor(Math.random()*(max_ - min_)) + min_;
     }
 }
 
@@ -57,7 +68,7 @@ class MonsterFactory {
         let monster = null;
         switch(name) {
             case "Orc":
-                monster = new Monster(name, 10, 2, 1, 0);
+                monster = new Monster({name: name, hp: 10, power: 2, xp: 1, token: 1});
                 break;
         }
         return monster;
