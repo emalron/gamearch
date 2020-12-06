@@ -1,6 +1,7 @@
 class Entity {
     constructor(hp) {
         this.hp = hp;
+        this.max_hp = hp;
         this.subscribes = [];
     }
     TakeDamage(dam) {

@@ -12,7 +12,7 @@ class State {
             this.element.style.display = "block";
         }
     }
-    Update(data) {}
+    Update(data, params) {}
     OnEnter = () => { this.element.focus(); console.log(`${this.name} enter...`)};
     OnLeave = () => { 
         console.log(`${this.name} leave...`)
@@ -41,13 +41,13 @@ class StateManager {
     Render() {
         this.current_state.Render();
     }
-    Update(data) {
-        this.current_state.Update(data);
+    Update(data, params) {
+        this.current_state.Update(data, params);
     }
-    Push(state) {
+    Push(state, params) {
         this.states[++this.top] = state;
         this.current_state = this.states[this.top];
-        this.states[this.top].OnEnter();
+        this.states[this.top].OnEnter(params);
     }
     Pop() {
         this.states[this.top--].OnLeave();

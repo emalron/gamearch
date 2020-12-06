@@ -25,7 +25,6 @@ statMonitor.Set("token", document.querySelector("div.character span.token"))
 statMonitor.Set("key", document.querySelector("div.character span.key"))
 
 let combatMonitor = new Monitor();
-combatMonitor.Set("combat", document.querySelector("div.combat-content"));
 combatMonitor.Notify = function(msg) {
     let {type, actors, detail} = msg;
     let self, target, result;
@@ -60,5 +59,6 @@ combatMonitor.finish = function() {
     this.history = '';
     this.Update(data);
 }
+combatMonitor.Set("combat", document.querySelector("div.combat-content"));
 
 export {statMonitor, combatMonitor};
