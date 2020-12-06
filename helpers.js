@@ -12,9 +12,7 @@ class State {
             this.element.style.display = "block";
         }
     }
-    Update(data) {
-        this.data = data;
-    }
+    Update(data) {}
     OnEnter = () => { this.element.focus(); console.log(`${this.name} enter...`)};
     OnLeave = () => { 
         console.log(`${this.name} leave...`)
@@ -82,21 +80,7 @@ class Monitor extends Observer {
             elem.innerText = value;
         }
     }
-    Notify(player) {
-        let {name: name, hp: hp, xp: xp, items: [item], gold: gold, token: token, key: key} = player;
-        let power = player.GetPower();
-        let data = new Map();
-        data.set("name", name);
-        data.set("hp", hp);
-        data.set("power", power);
-        data.set("xp", xp);
-        data.set("item", item.name);
-        data.set("gold", gold);
-        data.set("token", token);
-        data.set("key", key);
-        console.log(this);
-        this.Update(data);
-    }
+    Notify(data) {}
 }
 
 export {State, StateManager, Observer, Monitor};

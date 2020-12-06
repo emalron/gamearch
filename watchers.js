@@ -30,6 +30,20 @@ combatNews.Broadcast = function() {
 }.bind(combatNews);
 
 let statMonitor = new Monitor();
+statMonitor.Notify = function(player) {
+    let {name: name, hp: hp, xp: xp, items: [item], gold: gold, token: token, key: key} = player;
+    let power = player.GetPower();
+    let data = new Map();
+    data.set("name", name);
+    data.set("hp", hp);
+    data.set("power", power);
+    data.set("xp", xp);
+    data.set("item", item.name);
+    data.set("gold", gold);
+    data.set("token", token);
+    data.set("key", key);
+    this.Update(data);
+}.bind(statMonitor);
 statMonitor.Set("name", document.querySelector("div.character span.name"))
 statMonitor.Set("hp", document.querySelector("div.character span.hp"))
 statMonitor.Set("power", document.querySelector("div.character span.power"))
@@ -46,4 +60,5 @@ combatMonitor.Notify = function(msg) {
     data.set("combat", msg);
     this.Update(data);
 }.bind(combatMonitor);
+
 export {combatNews, statMonitor, combatMonitor};
