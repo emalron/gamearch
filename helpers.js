@@ -80,4 +80,10 @@ class Monitor extends Observer {
     Notify(data) {}
 }
 
-export {State, StateManager, Observer, Monitor};
+function getRandomArbitary(min, max) {
+    const min_ = Math.ceil(min);
+    const max_ = Math.floor(max);
+    return Math.floor(Math.random()*(max_ - min_)) + min_;
+}
+
+export {State, StateManager, Observer, Monitor, getRandomArbitary};

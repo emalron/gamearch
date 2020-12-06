@@ -1,5 +1,6 @@
 import {State, StateManager} from "./helpers.js"
 import {combatManager} from "./combat.js";
+import {guildManager} from "./guild.js";
 import {statMonitor} from "./watchers.js";
 
 const town_state = new State("town");
@@ -58,6 +59,78 @@ home_modal_state.OnEnter = function(params) {
     const player = params;
     player.hp = player.max_hp;
     statMonitor.Notify(player);
+}
+guild_modal_state.Update = function(key, params) {
+    let button, quest, text, player;
+    let accept_button = this.element.querySelector("button#quest-accept");
+    let reward_button = this.element.querySelector("button#quest-reward");
+    let output_span = this.element.querySelector("span#quest-output");
+    switch(key) {
+        case 'close':
+            sManager.Pop();
+            break;
+        case 'accept':
+            quest = guildManager.MakeQuest();
+            text = quest.GetDescription('condition');
+            accept_button.textContent = text;
+            accept_button.style.display = "block";
+            reward_button.style.display = "none";
+            output_span.style.display = "none";
+            break;
+        case 'processing':
+            player = params;
+            quest = guildManager.quest;
+            player.quest = quest.GetDescription("condition")
+            text = quest.GetDescription('reward');
+            reward_button.textContent = text;
+            reward_button.disabled = true;
+            accept_button.style.display = "none";
+            reward_button.style.display = "block";
+            statMonitor.Notify(player);
+            break;
+        case 'reward':
+            button = this.element.querySelector("button#quest-reward");
+            quest = guildManager.quest;
+            text = quest.GetDescription('reward');
+            button.textContent = text;
+            button.disabled = false;
+            accept_button.style.display = "none";
+            reward_button.style.display = "block";
+            output_span.style.display = "none";
+            break;
+        case 'completed':
+            console.log(`in completed case`)
+            player = params;
+            quest = guildManager.quest;
+            const reward = quest.GetReward();
+            text = `you took ${quest.GetDescription('reward')}`;
+            player.token -= quest.quantity;
+            player.gold += reward;
+            guildManager.quest = null;
+            output_span.textContent = text;
+            accept_button.style.display = "none";
+            reward_button.style.display = "none";
+            output_span.style.display = "block";
+            statMonitor.Notify(player);
+            break;
+    }
+}
+guild_modal_state.OnEnter = (params) => {
+    const player = params;
+    if(guildManager.HasQuest()) {
+        if(guildManager.HasComplated(player)) {
+            sManager.Update('reward');
+            sManager.Render();
+            return;
+        }
+        sManager.Update('processing');
+        sManager.Render();
+        return;
+    }
+    console.log(`guild-modal.OnEnter`)
+    sManager.Update('accept');
+    sManager.Render();
+    return;
 }
 forest_modal_state.Update = (key) => {
     switch(key) {

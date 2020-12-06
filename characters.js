@@ -1,3 +1,5 @@
+import {getRandomArbitary} from "./helpers.js"
+
 class Entity {
     constructor(hp) {
         this.hp = hp;
@@ -22,6 +24,8 @@ class Player extends Entity {
         this.items = [];
         this.key = 0;
         this.gold = 0;
+        this.food = 0;
+        this.quest = '';
     }
     GetPower() {
         return this.items.map(e=>e.power).reduce((acc,cur) => acc+cur);
@@ -48,18 +52,14 @@ class Monster extends Entity {
         return this.power;
     }
     GetToken() {
-        const random = this.getRandomArbitary(0, 10);
+        const random = getRandomArbitary(0, 10);
         const win = this.xp >= random;
         if(win) {
             return this.token;
         }
         return 0;
     }
-    getRandomArbitary(min, max) {
-        const min_ = Math.ceil(min);
-        const max_ = Math.floor(max);
-        return Math.floor(Math.random()*(max_ - min_)) + min_;
-    }
+
 }
 
 class MonsterFactory {

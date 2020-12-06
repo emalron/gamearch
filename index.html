@@ -13,9 +13,11 @@
                     <span>Power: <span class="power"></span></span><br>
                     <span>XP: <span class="xp"></span></span><br>
                     <span>Item: <span class="item"></span></span><br>
+                    <span>Food: <span class="food"></span></span><br>
                     <span>Gold: <span class="gold"></span></span><br>
                     <span>Token: <span class="token"></span></span><br>
-                    <span>Key: <span class="key"></span></span>
+                    <span>Key: <span class="key"></span></span><br>
+                    <span>Quest: <span class="quest"></span></span>
                 </p>
             </div>
             <div class="places">
@@ -23,7 +25,7 @@
                     <h1>Town</h1>
                     <p><button id="home">Home</button> - Restore HP</p>
                     <p><button id="shop">Shop</button> - Water and breads</p>
-                    <p><button>Guild</button> - Make money</p>
+                    <p><button id="guild">Guild</button> - Make money</p>
                     <p><button>Blacksmith</button> - Enhance your weapon</p>
                     <p><button id="world">World</button> - To the world!</p>
                 </div>
@@ -54,7 +56,9 @@
             <div class="modal-content">
                 <span class="modal-close">&times;</span>
                 <h2>Guild</h2>
-                <button id="item-menu">Item menu</button>
+                <button id="quest-accept"></button>
+                <button id="quest-reward"></button>
+                <span id="quest-output"></span>
             </div>
         </div>
         <div class="gameobject modal blacksmith-modal">
