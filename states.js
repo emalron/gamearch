@@ -1,4 +1,4 @@
-import {State, StateManager} from "./helpers.js"
+import {State, StateManager, showSnackbar} from "./helpers.js"
 import {combatManager} from "./combat.js";
 import {guildManager} from "./guild.js";
 import {statMonitor} from "./watchers.js";
@@ -99,7 +99,6 @@ guild_modal_state.Update = function(key, params) {
             output_span.style.display = "none";
             break;
         case 'completed':
-            console.log(`in completed case`)
             player = params;
             quest = guildManager.quest;
             const reward = quest.GetReward();
@@ -123,15 +122,33 @@ guild_modal_state.OnEnter = (params) => {
             sManager.Render();
             return;
         }
-        sManager.Update('processing');
+        sManager.Update('processing', player);
         sManager.Render();
         return;
     }
-    console.log(`guild-modal.OnEnter`)
     sManager.Update('accept');
     sManager.Render();
     return;
 }
+shop_modal_state.Update = function(key, params) {
+    const player = params;
+    switch(key) {
+        case 'close':
+            sManager.Pop();
+            break;
+        case 'buy':
+            const has_enough_gold = player.gold >= 1;
+            if(has_enough_gold) {
+                player.gold--;
+                player.food++;
+                statMonitor.Notify(player);
+            } else {
+                showSnackbar("not enough gold");
+            }
+            break;
+    }
+}
+            
 forest_modal_state.Update = (key) => {
     switch(key) {
         case 'close':

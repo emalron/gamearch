@@ -86,4 +86,33 @@ function getRandomArbitary(min, max) {
     return Math.floor(Math.random()*(max_ - min_)) + min_;
 }
 
-export {State, StateManager, Observer, Monitor, getRandomArbitary};
+var collect = function() {
+    const record = new Map();
+    for(let i=0; i<2000; i++) {
+        let num = 1;
+        while(true) {
+            const win = 25 >= prob(0, 100);
+            if(win) {
+                if(record.has(num)) {
+                    record.set(num, record.get(num)+1);
+                } else {
+                    record.set(num, 1);
+                }
+                break;
+            }
+            num++;
+        }
+        console.log(`hit ${num}`);
+    }
+    console.log(record);
+    return record;
+}
+
+var showSnackbar = function(msg) {
+    const element = document.querySelector("div#snackbar");
+    element.textContent = msg;
+    element.className = "show";
+    setTimeout(() => { element.className = element.className.replace("show", "") }, 3000);
+}
+
+export {State, StateManager, Observer, Monitor, getRandomArbitary, showSnackbar};

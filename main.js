@@ -11,7 +11,6 @@ sManager.Change(town_state);
 sManager.Render();
 statMonitor.Notify(player)
 combatManager.SetPlayer(player);
-player.token = 3;
 
 const town_button = document.querySelector("button#town");
 town_button.addEventListener("click", () => {
@@ -48,6 +47,12 @@ tower_button.addEventListener("click", () => {
     sManager.Update('tower-modal');
     sManager.Render();
 })
+const shop_button = document.querySelector("button#shop");
+shop_button.addEventListener("click", () => {
+    console.log('shop');
+    sManager.Update('shop-modal');
+    sManager.Render();
+});
 const modal_close_button = document.querySelectorAll("span.modal-close");
 modal_close_button.forEach(e => {
     e.addEventListener("click", () => {
@@ -69,10 +74,16 @@ guild_accept_button.forEach(e => {
 })
 const guild_reward_button = document.querySelectorAll("button#quest-reward");
 guild_reward_button.forEach(e => {
-    console.log(guild_reward_button);
     e.addEventListener("click", () => {
-        console.log('click!');
         sManager.Update('completed', player);
+        sManager.Render();
+    })
+})
+const shop_buy_button = document.querySelectorAll("button#shop-buy");
+shop_buy_button.forEach(e => {
+    e.addEventListener("click", () => {
+        console.log('shop-buy');
+        sManager.Update('buy', player);
         sManager.Render();
     })
 })
