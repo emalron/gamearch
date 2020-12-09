@@ -1,7 +1,7 @@
 import {State, StateManager, showSnackbar} from "./helpers.js"
 import {combatManager} from "./combat.js";
 import {guildManager} from "./guild.js";
-import {statMonitor} from "./watchers.js";
+import {combatMonitor, statMonitor} from "./watchers.js";
 
 const town_state = new State("town");
 const blacksmith_modal_state = new State("blacksmith-modal");
@@ -32,10 +32,10 @@ town_state.Update = (key, params) => {
             break;
     }
 }
-world_state.Update = (key) => {
+world_state.Update = (key, params) => {
     switch(key) {
         case 'forest-modal':
-            sManager.Push(forest_modal_state);
+            sManager.Push(forest_modal_state, params);
             break;
         case 'cave-modal':
             sManager.Push(cave_modal_state);
@@ -58,7 +58,9 @@ home_modal_state.Update = (key) => {
 home_modal_state.OnEnter = function(params) {
     const player = params;
     player.hp = player.max_hp;
+    showSnackbar('You are fully healed');
     statMonitor.Notify(player);
+    sManager.Pop();
 }
 guild_modal_state.Update = function(key, params) {
     let button, quest, text, player;
@@ -83,7 +85,11 @@ guild_modal_state.Update = function(key, params) {
             player.quest = quest.GetDescription("condition")
             text = quest.GetDescription('reward');
             reward_button.textContent = text;
-            reward_button.disabled = true;
+            if(guildManager.HasComplated(player)) {
+                reward_button.disabled = false;
+            } else {
+                reward_button.disabled = true;
+            }
             accept_button.style.display = "none";
             reward_button.style.display = "block";
             statMonitor.Notify(player);
@@ -118,7 +124,7 @@ guild_modal_state.OnEnter = (params) => {
     const player = params;
     if(guildManager.HasQuest()) {
         if(guildManager.HasComplated(player)) {
-            sManager.Update('reward');
+            sManager.Update('reward', player);
             sManager.Render();
             return;
         }
@@ -126,7 +132,7 @@ guild_modal_state.OnEnter = (params) => {
         sManager.Render();
         return;
     }
-    sManager.Update('accept');
+    sManager.Update('accept', player);
     sManager.Render();
     return;
 }
@@ -148,16 +154,64 @@ shop_modal_state.Update = function(key, params) {
             break;
     }
 }
-            
-forest_modal_state.Update = (key) => {
+blacksmith_modal_state.Update = function(key, params) {
+    const player = params;
     switch(key) {
         case 'close':
             sManager.Pop();
             break;
+        case 'inside':
+            const msg = `Upgrade your ${player.items[0].name}`;
+            const upgrade_button = this.element.querySelector("button#blacksmith-upgrade");
+            upgrade_button.textContent = msg;
+            break;
+        case 'upgrade':
+            const has_enough_gold = player.gold >= 10;
+            if(has_enough_gold) {
+                const item = player.items[0];
+                item.power++;
+                player.gold -= 10;
+                statMonitor.Notify(player);
+            } else {
+                showSnackbar("not enough gold");
+            }
+            break;
     }
 }
-forest_modal_state.OnEnter = function() {
-    combatManager.Combat("Orc");
+blacksmith_modal_state.OnEnter = function(params) {
+    const player = params;
+    sManager.Update('inside', player);
+}
+forest_modal_state.Update = function(key, params) {
+    const player = params;
+    switch(key) {
+        case 'close':
+            sManager.Pop();
+            break;
+        case 'eat':
+            const msg = `Eat food(${player.food})`;
+            const eat_food_button = this.element.querySelector("button.combat-eatfood");
+            eat_food_button.textContent = msg;
+            if(player.food <= 0) {
+                eat_food_button.disabled = true;
+            } else {
+                eat_food_button.disabled = false;
+            }
+            break;
+        case 'fight':
+            let has_hp = player.hp > 0;
+            if(has_hp) {
+                combatManager.Marathon("Orc");
+                sManager.Update('eat', player);
+                return;
+            }
+            showSnackbar("I have no hit points to fight");
+            break;
+    }
+}
+forest_modal_state.OnEnter = function(player) {
+    combatMonitor.clear();
+    sManager.Update('fight', player);
 }
 
 cave_modal_state.Update = (key) => {

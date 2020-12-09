@@ -6,6 +6,7 @@ import {Player, Item} from "./characters.js";
 let player = new Player("Jes");
 let sword = new Item("Sword", 5);
 player.items.push(sword);
+player.token = 3;
 
 sManager.Change(town_state);
 sManager.Render();
@@ -32,9 +33,14 @@ guild_button.addEventListener("click", () => {
     sManager.Update('guild-modal', player);
     sManager.Render();
 })
+const blacksmith_button = document.querySelector("button#blacksmith");
+blacksmith_button.addEventListener("click", () => {
+    sManager.Update('blacksmith-modal', player);
+    sManager.Render();
+})
 const forest_button = document.querySelector("button#forest");
 forest_button.addEventListener("click", () => {
-    sManager.Update('forest-modal');
+    sManager.Update('forest-modal', player);
     sManager.Render();
 })
 const cave_button = document.querySelector("button#cave");
@@ -65,6 +71,15 @@ combat_close_button.forEach(e => {
         sManager.Update('close');
     })
 })
+const combat_eatfood_button = document.querySelectorAll(".combat-eatfood");
+combat_eatfood_button.forEach(e => {
+    e.addEventListener("click", () => {
+        player.hp = player.max_hp;
+        player.food--;
+        sManager.Update('fight', player)
+        sManager.Render();
+    })
+})
 const guild_accept_button = document.querySelectorAll("button#quest-accept");
 guild_accept_button.forEach(e => {
     e.addEventListener("click", () => {
@@ -87,3 +102,9 @@ shop_buy_button.forEach(e => {
         sManager.Render();
     })
 })
+const blacksmith_upgrade_button = document.querySelector("button#blacksmith-upgrade");
+blacksmith_upgrade_button.addEventListener("click", () => {
+    sManager.Update('upgrade', player);
+    sManager.Render();
+})
+

@@ -45,15 +45,13 @@ combatMonitor.Notify = function(msg) {
         case 'KILL':
             [self, target] = actors;
             let {xp: xp, token: token} = detail;
-            result = `${self} killed ${target}: ${xp} xp, ${token} tokens`
+            result = `${self} killed ${target}: ${xp} xp, ${token} tokens\n`
             this.history += result;
-            this.finish();
             break;
         case 'DEFEATED':
             [self] = actors;
-            result = `${self} lose...`;
+            result = `${self} lose...\n`;
             this.history += result;
-            this.finish();
             break;
     }
 }
@@ -61,6 +59,11 @@ combatMonitor.finish = function() {
     const data = new Map();
     data.set("combat", this.history);
     this.history = '';
+    this.Update(data);
+}
+combatMonitor.clear = function() {
+    const data = new Map();
+    data.set("combat", "");
     this.Update(data);
 }
 combatMonitor.Set("combat", document.querySelector("div.combat-content"));

@@ -35,6 +35,12 @@ class CombatManager {
         statMonitor.Notify(player);
         return;
     }
+    Marathon(name) {
+        while(this.player.hp > 0) {
+            this.Combat(name);
+        }
+        combatMonitor.finish();
+    }
 }
 
 let combatManager = new CombatManager();
