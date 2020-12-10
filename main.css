@@ -7,6 +7,17 @@ main {
     width: 30%;
 }
 
+.stat-item {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 8px;
+    margin-left: 4px;
+    font-size: 21px;
+}
+.stat-icon {
+    width: 28px;
+    display: inline-block;
+}
 
 .home {
     display: none

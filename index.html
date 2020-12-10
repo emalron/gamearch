@@ -3,22 +3,23 @@
     <head>
         <title>State practice</title>
         <link rel="stylesheet" href="main.css?ver=1.0">
+        <meta charset="utf-8">
     </head>
     <body>
         <main>
             <div class="character">
                 <h1>You are... <span class="name"></span></h1>
                 <p>
-                    <span>Hit Points: <span class="hp"></span></span><br>
-                    <span>Power: <span class="power"></span></span><br>
-                    <span>XP: <span class="xp"></span></span><br>
-                    <span>Item: <span class="item"></span></span><br>
-                    <span>Food: <span class="food"></span></span><br>
-                    <span>Gold: <span class="gold"></span></span><br>
-                    <span>Token: <span class="token"></span></span><br>
-                    <span>Key: <span class="key"></span></span><br>
-                    <span>Quest</span></br>
-                    <span class="quest"></span>
+                    <div class="stat-item"><div class="stat-icon" alt="Hit points">🧡</div> <span class="hp"></span></div>
+                    <div class="stat-item"><div class="stat-icon">💪</div> <span class="power"></span></div>
+                    <div class="stat-item"><div class="stat-icon">🥇</div> <span class="xp"></span></div>
+                    <div class="stat-item"><div class="stat-icon">🔨</div> <span class="item"></span></div>
+                    <div class="stat-item"><div class="stat-icon">🍗</div> <span class="food"></span></div>
+                    <div class="stat-item"><div class="stat-icon">💰</div> <span class="gold"></span></div>
+                    <div class="stat-item"><div class="stat-icon">🦷</div> <span class="token"></span></div>
+                    <div class="stat-item"><div class="stat-icon">🔑</div> <span class="key"></span></div>
+                    <div class="stat-item"><div class="stat-icon">❔</div></div>
+                    <div class="stat-item"><span class="quest"></span></div>
                 </p>
             </div>
             <div class="places">
@@ -107,6 +108,7 @@
             </div>
         </div>
         <div id="snackbar"></div>
+        <script src="https://kit.fontawesome.com/c4c4724b10.js" crossorigin="anonymous"></script>
         <script type="module" src="main.js"></script>
     </body>
 </html>
