@@ -40,11 +40,10 @@ world_state.Update = (key, params) => {
             sManager.Push(forest_modal_state, params);
             break;
         case 'cave-modal':
-
             sManager.Push(cave_modal_state, params);
             break;
         case 'tower-modal':
-            sManager.Push(tower_modal_state);
+            sManager.Push(tower_modal_state, params);
             break;
         case 'town':
             sManager.Change(town_state);
@@ -256,22 +255,41 @@ cave_modal_state.Update = (key) => {
 cave_modal_state.OnEnter = function(player) {
     const not_yet_unlock = !worldManager.LockCheck("cave");
     if(not_yet_unlock) {
-        const not_enough_key = player.key < 1;
+        const key = 1;
+        const not_enough_key = player.key < key;
         if(not_enough_key) {
             showSnackbar("not enough 🔑");
+            sManager.Pop();
             return;
         }
         worldManager.Unlock("cave");
-        player.key--;
+        player.key -= key;
         statMonitor.Notify(player);
     }
     sManager.Update('fight', player);
 }
+
 tower_modal_state.Update = (key) => {
     switch(key) {
         case 'close':
             sManager.Pop();
             break;
     }
+}
+tower_modal_state.OnEnter = function(player) {
+    const not_yet_unlock = !worldManager.LockCheck("tower");
+    if(not_yet_unlock) {
+        const key = 100;
+        const not_enough_key = player.key < key;
+        if(not_enough_key) {
+            showSnackbar("not enough 🔑");
+            sManager.Pop();
+            return;
+        }
+        worldManager.Unlock("tower");
+        player.key -= key;
+        statMonitor.Notify(player);
+    }
+    sManager.Update('fight', player);
 }
 export {sManager, town_state};

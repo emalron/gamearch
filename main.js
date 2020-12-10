@@ -51,7 +51,7 @@ cave_button.addEventListener("click", () => {
 })
 const tower_button = document.querySelector("button#tower");
 tower_button.addEventListener("click", () => {
-    sManager.Update('tower-modal');
+    sManager.Update('tower-modal', player);
     sManager.Render();
 })
 const shop_button = document.querySelector("button#shop");
