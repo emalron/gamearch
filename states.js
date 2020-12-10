@@ -233,7 +233,7 @@ forest_modal_state.OnEnter = function(player) {
         const forest_key = 0;
         const not_enough_key = player.key < forest_key;
         if(not_enough_key) {
-            showSnackbar("not enough 🔑");
+            showSnackbar("not enough 🏆");
             return;
         }
         worldManager.Unlock("forest");
@@ -263,7 +263,7 @@ cave_modal_state.OnEnter = function(player) {
         const key = 1;
         const not_enough_key = player.key < key;
         if(not_enough_key) {
-            showSnackbar("not enough 🔑");
+            showSnackbar("not enough 🏆");
             sManager.Pop();
             return;
         }
@@ -288,7 +288,7 @@ tower_modal_state.OnEnter = function(player) {
         const key = 100;
         const not_enough_key = player.key < key;
         if(not_enough_key) {
-            showSnackbar("not enough 🔑");
+            showSnackbar("not enough 🏆");
             sManager.Pop();
             return;
         }
