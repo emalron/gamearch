@@ -1,5 +1,6 @@
 import {statMonitor, combatMonitor} from "./watchers.js";
 import {MonsterFactory} from "./characters.js";
+import { sManager } from "./states.js";
 
 class CombatManager {
     constructor() {
@@ -46,6 +47,10 @@ class CombatManager {
             this.killed++;
             await new Promise( r => setTimeout(r, 500));
             this.draw(monster_display);
+        }
+        if(this.killed >= this.monsters.length) {
+            await new Promise( r => setTimeout(r, 1000));
+            sManager.Update('win', this.player);
         }
     }
     draw(monster_display) {

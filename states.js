@@ -220,6 +220,11 @@ forest_modal_state.Update = function(key, params) {
             }
             showSnackbar("I have no 🧡 to fight");
             break;
+        case 'win':
+            player.key++;
+            showSnackbar("you got 🏆");
+            sManager.Pop();
+            break;
     }
 }
 forest_modal_state.OnEnter = function(player) {
@@ -265,6 +270,7 @@ cave_modal_state.OnEnter = function(player) {
         worldManager.Unlock("cave");
         player.key -= key;
         statMonitor.Notify(player);
+        worldMonitor.Notify(worldManager.GetUnlocks());
     }
     sManager.Update('fight', player);
 }
@@ -289,6 +295,7 @@ tower_modal_state.OnEnter = function(player) {
         worldManager.Unlock("tower");
         player.key -= key;
         statMonitor.Notify(player);
+        worldMonitor.Notify(worldManager.GetUnlocks());
     }
     sManager.Update('fight', player);
 }
