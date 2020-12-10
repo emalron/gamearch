@@ -58,6 +58,9 @@ main {
     text-decoration: none;
     cursor: pointer;
 }
+.modal-content .combat-monsters {
+    float: right;
+}
 .modal-content .combat-main {
     display: flex;
 }

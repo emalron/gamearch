@@ -36,6 +36,17 @@ class Item {
     constructor(name, power) {
         this.name = name;
         this.power = power;
+        this.enhance = 0;
+    }
+    GetName() {
+        if(this.enhance) {
+            return `+${this.enhance} ${this.name}`;
+        }
+        return this.name;
+    }
+    Enhance() {
+        this.enhance++;
+        this.power += 2;
     }
 }
 
@@ -65,10 +76,11 @@ class Monster extends Entity {
 class MonsterFactory {
     constructor() {}
     static Generate(name) {
+        console.log(name);
         let monster = null;
         switch(name) {
-            case "Orc":
-                monster = new Monster({name: name, hp: 10, power: 2, xp: 1, token: 1});
+            case "Zombie":
+                monster = new Monster({name: '🧟‍♂️', hp: 10, power: 2, xp: 1, token: 1});
                 break;
         }
         return monster;

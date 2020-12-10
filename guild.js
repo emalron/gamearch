@@ -11,14 +11,10 @@ class Quest {
         let output = ''
         switch(type) {
             case 'condition':
-                if(this.quantity == 1) {
-                    output = `Collect an ${this.item}`;
-                } else {
-                    output = `Collect ${this.quantity} ${this.item}s`;
-                }
+                output = `Collect ${this.quantity} ${this.item}`;
                 break;
             case 'reward':
-                output = `${this.reward} gold`
+                output = `${this.reward} 💰`
                 break;
         }
         return output
@@ -52,7 +48,7 @@ class GuildManager {
     }
     MakeQuest() {
         const random = getRandomArbitary(1, 3);
-        const quest = new Quest({item: "token", quantity: random, reward: random});
+        const quest = new Quest({item: "🦷", quantity: random, reward: random});
         this.quest = quest;
         return quest;
     }

@@ -1,7 +1,9 @@
 import {State, StateManager, showSnackbar} from "./helpers.js"
 import {combatManager} from "./combat.js";
 import {guildManager} from "./guild.js";
-import {combatMonitor, statMonitor} from "./watchers.js";
+import {worldManager} from "./world.js";
+import {combatMonitor, statMonitor, worldMonitor} from "./watchers.js";
+import { MonsterFactory } from "./characters.js";
 
 const town_state = new State("town");
 const blacksmith_modal_state = new State("blacksmith-modal");
@@ -38,7 +40,8 @@ world_state.Update = (key, params) => {
             sManager.Push(forest_modal_state, params);
             break;
         case 'cave-modal':
-            sManager.Push(cave_modal_state);
+
+            sManager.Push(cave_modal_state, params);
             break;
         case 'tower-modal':
             sManager.Push(tower_modal_state);
@@ -48,6 +51,11 @@ world_state.Update = (key, params) => {
             break;
     }
 }
+world_state.OnEnter = function(params) {
+    worldMonitor.Notify(worldManager.GetUnlocks());
+    world_state.Update('normal', params);
+}
+
 home_modal_state.Update = (key) => {
     switch(key) {
         case 'close':
@@ -108,15 +116,16 @@ guild_modal_state.Update = function(key, params) {
             player = params;
             quest = guildManager.quest;
             const reward = quest.GetReward();
-            text = `you took ${quest.GetDescription('reward')}`;
+            text = `you got ${quest.GetDescription('reward')}`;
             player.token -= quest.quantity;
             player.gold += reward;
             guildManager.quest = null;
-            output_span.textContent = text;
+            showSnackbar(text);
+            player.quest = "";
             accept_button.style.display = "none";
             reward_button.style.display = "none";
-            output_span.style.display = "block";
             statMonitor.Notify(player);
+            sManager.Pop();
             break;
     }
 }
@@ -147,33 +156,38 @@ shop_modal_state.Update = function(key, params) {
             if(has_enough_gold) {
                 player.gold--;
                 player.food++;
+                showSnackbar("you got 🍗");
                 statMonitor.Notify(player);
             } else {
-                showSnackbar("not enough gold");
+                showSnackbar("not enough 💰");
             }
             break;
     }
 }
 blacksmith_modal_state.Update = function(key, params) {
     const player = params;
+    let msg, upgrade_button;
     switch(key) {
         case 'close':
             sManager.Pop();
             break;
         case 'inside':
-            const msg = `Upgrade your ${player.items[0].name}`;
-            const upgrade_button = this.element.querySelector("button#blacksmith-upgrade");
+            msg = `Upgrade your ${player.items[0].GetName()}`;
+            upgrade_button = this.element.querySelector("button#blacksmith-upgrade");
             upgrade_button.textContent = msg;
             break;
         case 'upgrade':
             const has_enough_gold = player.gold >= 10;
             if(has_enough_gold) {
                 const item = player.items[0];
-                item.power++;
+                item.Enhance();
                 player.gold -= 10;
+                msg = `Upgrade your ${player.items[0].GetName()}`;
+                upgrade_button = this.element.querySelector("button#blacksmith-upgrade");
+                upgrade_button.textContent = msg;
                 statMonitor.Notify(player);
             } else {
-                showSnackbar("not enough gold");
+                showSnackbar("not enough 💰");
             }
             break;
     }
@@ -189,7 +203,7 @@ forest_modal_state.Update = function(key, params) {
             sManager.Pop();
             break;
         case 'eat':
-            const msg = `Eat food(${player.food})`;
+            const msg = `Eat 🍗`;
             const eat_food_button = this.element.querySelector("button.combat-eatfood");
             eat_food_button.textContent = msg;
             if(player.food <= 0) {
@@ -201,16 +215,34 @@ forest_modal_state.Update = function(key, params) {
         case 'fight':
             let has_hp = player.hp > 0;
             if(has_hp) {
-                combatManager.Marathon("Orc");
+                combatManager.Marathon();
                 sManager.Update('eat', player);
                 return;
             }
-            showSnackbar("I have no hit points to fight");
+            showSnackbar("I have no 🧡 to fight");
             break;
     }
 }
 forest_modal_state.OnEnter = function(player) {
+    const not_yet_unlock = !worldManager.LockCheck("forest");
+    if(not_yet_unlock) {
+        const forest_key = 0;
+        const not_enough_key = player.key < forest_key;
+        if(not_enough_key) {
+            showSnackbar("not enough 🔑");
+            return;
+        }
+        worldManager.Unlock("forest");
+        player.key -= forest_key;
+        statMonitor.Notify(player);
+        worldMonitor.Notify(worldManager.GetUnlocks());
+    }
     combatMonitor.clear();
+    let monsters = [];
+    for(let i=0; i<10; i++) {
+        monsters.push(MonsterFactory.Generate("Zombie"));
+    }
+    combatManager.SetStage(monsters);
     sManager.Update('fight', player);
 }
 
@@ -220,6 +252,20 @@ cave_modal_state.Update = (key) => {
             sManager.Pop();
             break;
     }
+}
+cave_modal_state.OnEnter = function(player) {
+    const not_yet_unlock = !worldManager.LockCheck("cave");
+    if(not_yet_unlock) {
+        const not_enough_key = player.key < 1;
+        if(not_enough_key) {
+            showSnackbar("not enough 🔑");
+            return;
+        }
+        worldManager.Unlock("cave");
+        player.key--;
+        statMonitor.Notify(player);
+    }
+    sManager.Update('fight', player);
 }
 tower_modal_state.Update = (key) => {
     switch(key) {

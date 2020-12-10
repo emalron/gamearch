@@ -7,6 +7,7 @@ let player = new Player("Jes");
 let sword = new Item("Sword", 5);
 player.items.push(sword);
 player.token = 3;
+player.gold = 10;
 
 sManager.Change(town_state);
 sManager.Render();
@@ -45,7 +46,7 @@ forest_button.addEventListener("click", () => {
 })
 const cave_button = document.querySelector("button#cave");
 cave_button.addEventListener("click", () => {
-    sManager.Update('cave-modal');
+    sManager.Update('cave-modal', player);
     sManager.Render();
 })
 const tower_button = document.querySelector("button#tower");

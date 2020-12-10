@@ -8,9 +8,13 @@ class CombatManager {
     SetPlayer(player) {
         this.player = player;
     }
-    Combat(name) {
+    SetStage(monsters) {
+        this.killed = 0;
+        this.monsters = monsters;
+    }
+    Combat() {
         const player = this.player;
-        const monster = MonsterFactory.Generate(name);
+        const monster = this.monsters[this.killed];
         const combatants = [player, monster];
         let turn = 0;
         let side = 0;
@@ -35,12 +39,29 @@ class CombatManager {
         statMonitor.Notify(player);
         return;
     }
-    Marathon(name) {
-        while(this.player.hp > 0) {
-            this.Combat(name);
+    async Marathon() {
+        let monster_display = '';
+        while(this.player.hp > 0 && this.killed < this.monsters.length) {
+            this.Combat();
+            this.killed++;
+            await new Promise( r => setTimeout(r, 500));
+            this.draw(monster_display);
         }
-        combatMonitor.finish();
     }
+    draw(monster_display) {
+        for(let i=0; i<this.killed; i++) {
+            monster_display += '❌';
+        }
+        for(let j=this.killed; j<this.monsters.length; j++) {
+            monster_display += this.monsters[j].name;
+        }
+        monster_display += '🏆';
+        if(this.killed == this.monsters.length) {
+            console.log('🏆🏆🏆🏆🏆')
+        }
+        combatMonitor.draw(monster_display);
+    }
+
 }
 
 let combatManager = new CombatManager();

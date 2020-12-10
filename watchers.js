@@ -9,7 +9,7 @@ statMonitor.Notify = function(player) {
     data.set("hp", hp);
     data.set("power", power);
     data.set("xp", xp);
-    data.set("item", item.name);
+    data.set("item", item.GetName());
     data.set("food", food);
     data.set("gold", gold);
     data.set("token", token);
@@ -39,33 +39,71 @@ combatMonitor.Notify = function(msg) {
         case 'ATTACK':
             [self, target] = actors;
             let {damage: damage, hp: targetHP} = detail;
-            result = `${self} attacked ${damage} damage: ${target} has ${targetHP} hit points\n`;
+            result = `${self} ${damage} 💪 > ${target} has ${targetHP} 🧡\n`;
             this.history += result;
             break;
         case 'KILL':
             [self, target] = actors;
             let {xp: xp, token: token} = detail;
-            result = `${self} killed ${target}: ${xp} xp, ${token} tokens\n`
+            result = `  ${target} ❌ > ${xp} 🥇, ${token} 🦷\n\n`
             this.history += result;
             break;
         case 'DEFEATED':
             [self] = actors;
-            result = `${self} lose...\n`;
+            result = `${self} ❌\n\n`;
             this.history += result;
             break;
     }
 }
-combatMonitor.finish = function() {
+combatMonitor.finish = function(monsters) {
     const data = new Map();
     data.set("combat", this.history);
+    data.set("monsters", monsters);
     this.history = '';
     this.Update(data);
+}
+combatMonitor.draw = function(monsters) {
+    const data = new Map();
+    data.set("combat", this.history);
+    data.set("monsters", monsters);
+    this.Update(data);    
 }
 combatMonitor.clear = function() {
     const data = new Map();
     data.set("combat", "");
+    data.set("monsters", "");
+    this.history = '';
     this.Update(data);
 }
 combatMonitor.Set("combat", document.querySelector("div.combat-content"));
+combatMonitor.Set("monsters", document.querySelector("div.combat-monsters"));
 
-export {statMonitor, combatMonitor};
+let worldMonitor = new Monitor();
+worldMonitor.Notify = function(unlocks) {
+    let forest, cave, tower;
+    if(unlocks.forest) {
+        forest = `forest`;
+    } else {
+        forest = `Unlock 0 🏆`;
+    }
+    if(unlocks.cave) {
+        cave = `cave`;
+    } else {
+        cave = `Unlock 1 🏆`;
+    }
+    if(unlocks.tower) {
+        tower = `tower`;
+    } else {
+        tower = `Unlock 100 🏆`;
+    }
+    const data = new Map();
+    data.set("forest", forest);
+    data.set("cave", cave);
+    data.set("tower", tower);
+    this.Update(data);
+}
+worldMonitor.Set("forest", document.querySelector("button#forest"));
+worldMonitor.Set("cave", document.querySelector("button#cave"));
+worldMonitor.Set("tower", document.querySelector("button#tower"));
+
+export {statMonitor, combatMonitor, worldMonitor};
