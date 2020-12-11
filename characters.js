@@ -82,6 +82,12 @@ class MonsterFactory {
             case "Zombie":
                 monster = new Monster({name: '🧟‍♂️', hp: 10, power: 2, xp: 1, token: 1});
                 break;
+            case "Vampire":
+                monster = new Monster({name: '🧛‍♀️', hp: 20, power: 4, xp: 5, token: 3});
+                break;
+            case "Demon":
+                monster = new Monster({name: '👿', hp: 100, power: 20, xp: 25, token: 5});
+                break;
         }
         return monster;
     }

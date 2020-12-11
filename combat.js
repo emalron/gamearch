@@ -1,10 +1,11 @@
 import {statMonitor, combatMonitor} from "./watchers.js";
-import {MonsterFactory} from "./characters.js";
 import { sManager } from "./states.js";
 
 class CombatManager {
     constructor() {
         this.player = null;
+        this.xp = 0;
+        this.token = 0;
     }
     SetPlayer(player) {
         this.player = player;
@@ -12,6 +13,8 @@ class CombatManager {
     SetStage(monsters) {
         this.killed = 0;
         this.monsters = monsters;
+        this.xp = 0;
+        this.token = 0;
     }
     Combat() {
         const player = this.player;
@@ -33,6 +36,8 @@ class CombatManager {
             const token_ = monster.GetToken();
             player.xp += monster.xp;
             player.token += token_;
+            this.xp += monster.xp;
+            this.token += token_;
             combatMonitor.Notify({type: 'KILL', actors: [player.name, monster.name], detail: {xp: monster.xp, token: token_}});
         } else {
             combatMonitor.Notify({type: 'DEFEATED', actors: [player.name]})
@@ -42,15 +47,18 @@ class CombatManager {
     }
     async Marathon() {
         let monster_display = '';
+        console.log(this.monsters);
         while(this.player.hp > 0 && this.killed < this.monsters.length) {
             this.Combat();
-            this.killed++;
+            if(this.player.hp > 0) this.killed++;
             await new Promise( r => setTimeout(r, 500));
             this.draw(monster_display);
         }
-        if(this.killed >= this.monsters.length) {
+        if(this.killed > this.monsters.length) {
             await new Promise( r => setTimeout(r, 1000));
-            sManager.Update('win', this.player);
+            sManager.Update('win', {player: this.player, xp: this.xp, token: this.token});
+        } else {
+            combatMonitor.finish();
         }
     }
     draw(monster_display) {
@@ -60,10 +68,7 @@ class CombatManager {
         for(let j=this.killed; j<this.monsters.length; j++) {
             monster_display += this.monsters[j].name;
         }
-        monster_display += '🏆';
-        if(this.killed == this.monsters.length) {
-            console.log('🏆🏆🏆🏆🏆')
-        }
+        monster_display += '🏁';
         combatMonitor.draw(monster_display);
     }
 

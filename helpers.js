@@ -73,8 +73,10 @@ class Monitor extends Observer {
     Update(stats) {
         for(let key of stats.keys()) {
             let value = stats.get(key);
-            let elem = this.map.get(key);
-            elem.innerText = value;
+            let elems = this.map.get(key);
+            elems.forEach(e => {
+                e.innerText = value;
+            })
         }
     }
     Notify(data) {}

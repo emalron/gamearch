@@ -4,10 +4,9 @@ import {combatManager} from "./combat.js";
 import {Player, Item} from "./characters.js";
 
 let player = new Player("Jes");
-let sword = new Item("Sword", 5);
+let sword = new Item("Sword", 4);
 player.items.push(sword);
-player.token = 3;
-player.gold = 10;
+player.key = 200;
 
 sManager.Change(town_state);
 sManager.Render();

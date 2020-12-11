@@ -197,12 +197,13 @@ blacksmith_modal_state.OnEnter = function(params) {
 }
 forest_modal_state.Update = function(key, params) {
     const player = params;
+    let msg;
     switch(key) {
         case 'close':
             sManager.Pop();
             break;
         case 'eat':
-            const msg = `Eat 🍗`;
+            msg = `Eat 🍗`;
             const eat_food_button = this.element.querySelector("button.combat-eatfood");
             eat_food_button.textContent = msg;
             if(player.food <= 0) {
@@ -221,8 +222,10 @@ forest_modal_state.Update = function(key, params) {
             showSnackbar("I have no 🧡 to fight");
             break;
         case 'win':
-            player.key++;
-            showSnackbar("you got 🏆");
+            const {player: player_, xp: xp_, token: token_} = params;
+            player_.key++;
+            msg = `you got ${xp_} 🥇 ${token_} 🦷 1 🏆`
+            showSnackbar(msg);
             sManager.Pop();
             break;
     }
@@ -243,16 +246,44 @@ forest_modal_state.OnEnter = function(player) {
     }
     combatMonitor.clear();
     let monsters = [];
-    for(let i=0; i<10; i++) {
+    for(let i=0; i<15; i++) {
         monsters.push(MonsterFactory.Generate("Zombie"));
     }
     combatManager.SetStage(monsters);
     sManager.Update('fight', player);
 }
 
-cave_modal_state.Update = (key) => {
+cave_modal_state.Update = function(key, params) {
+    const player = params;
+    let msg;
     switch(key) {
         case 'close':
+            sManager.Pop();
+            break;
+        case 'eat':
+            msg = `Eat 🍗`;
+            const eat_food_button = this.element.querySelector("button.combat-eatfood");
+            eat_food_button.textContent = msg;
+            if(player.food <= 0) {
+                eat_food_button.disabled = true;
+            } else {
+                eat_food_button.disabled = false;
+            }
+            break;
+        case 'fight':
+            let has_hp = player.hp > 0;
+            if(has_hp) {
+                combatManager.Marathon();
+                sManager.Update('eat', player);
+                return;
+            }
+            showSnackbar("I have no 🧡 to fight");
+            break;
+        case 'win':
+            const {player: player_, xp: xp_, token: token_} = params;
+            player_.key += 10;
+            msg = `you got ${xp_} 🥇 ${token_} 🦷 10 🏆`
+            showSnackbar(msg);
             sManager.Pop();
             break;
     }
@@ -272,12 +303,46 @@ cave_modal_state.OnEnter = function(player) {
         statMonitor.Notify(player);
         worldMonitor.Notify(worldManager.GetUnlocks());
     }
+    combatMonitor.clear();
+    let monsters = [];
+    for(let i=0; i<15; i++) {
+        monsters.push(MonsterFactory.Generate("Vampire"));
+    }
+    combatManager.SetStage(monsters);
     sManager.Update('fight', player);
 }
 
-tower_modal_state.Update = (key) => {
+tower_modal_state.Update = function(key, params) {
+    const player = params;
+    let msg;
     switch(key) {
         case 'close':
+            sManager.Pop();
+            break;
+        case 'eat':
+            msg = `Eat 🍗`;
+            const eat_food_button = this.element.querySelector("button.combat-eatfood");
+            eat_food_button.textContent = msg;
+            if(player.food <= 0) {
+                eat_food_button.disabled = true;
+            } else {
+                eat_food_button.disabled = false;
+            }
+            break;
+        case 'fight':
+            let has_hp = player.hp > 0;
+            if(has_hp) {
+                combatManager.Marathon();
+                sManager.Update('eat', player);
+                return;
+            }
+            showSnackbar("I have no 🧡 to fight");
+            break;
+        case 'win':
+            const {player: player_, xp: xp_, token: token_} = params;
+            player_.key += 100;
+            msg = `you got ${xp_} 🥇 ${token_} 🦷 100 🏆`
+            showSnackbar(msg);
             sManager.Pop();
             break;
     }
@@ -297,6 +362,10 @@ tower_modal_state.OnEnter = function(player) {
         statMonitor.Notify(player);
         worldMonitor.Notify(worldManager.GetUnlocks());
     }
+    combatMonitor.clear();
+    let monsters = [];
+    monsters.push(MonsterFactory.Generate("Demon"));
+    combatManager.SetStage(monsters);
     sManager.Update('fight', player);
 }
 export {sManager, town_state};

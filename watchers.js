@@ -17,16 +17,16 @@ statMonitor.Notify = function(player) {
     data.set("quest", quest);
     this.Update(data);
 }
-statMonitor.Set("name", document.querySelector("div.character span.name"))
-statMonitor.Set("hp", document.querySelector("div.character span.hp"))
-statMonitor.Set("power", document.querySelector("div.character span.power"))
-statMonitor.Set("xp", document.querySelector("div.character span.xp"))
-statMonitor.Set("item", document.querySelector("div.character span.item"))
-statMonitor.Set("food", document.querySelector("div.character span.food"))
-statMonitor.Set("gold", document.querySelector("div.character span.gold"))
-statMonitor.Set("token", document.querySelector("div.character span.token"))
-statMonitor.Set("key", document.querySelector("div.character span.key"))
-statMonitor.Set("quest", document.querySelector("div.character span.quest"))
+statMonitor.Set("name", document.querySelectorAll("div.character span.name"))
+statMonitor.Set("hp", document.querySelectorAll("div.character span.hp"))
+statMonitor.Set("power", document.querySelectorAll("div.character span.power"))
+statMonitor.Set("xp", document.querySelectorAll("div.character span.xp"))
+statMonitor.Set("item", document.querySelectorAll("div.character span.item"))
+statMonitor.Set("food", document.querySelectorAll("div.character span.food"))
+statMonitor.Set("gold", document.querySelectorAll("div.character span.gold"))
+statMonitor.Set("token", document.querySelectorAll("div.character span.token"))
+statMonitor.Set("key", document.querySelectorAll("div.character span.key"))
+statMonitor.Set("quest", document.querySelectorAll("div.character span.quest"))
 
 let combatMonitor = new Monitor();
 combatMonitor.Notify = function(msg) {
@@ -34,6 +34,8 @@ combatMonitor.Notify = function(msg) {
     let self, target, result;
     if(this.history) {} else {
         this.history = '';
+        this.xp = 0;
+        this.token = 0;
     }
     switch(type) {
         case 'ATTACK':
@@ -47,6 +49,8 @@ combatMonitor.Notify = function(msg) {
             let {xp: xp, token: token} = detail;
             result = `  ${target} ❌ > ${xp} 🥇, ${token} 🦷\n\n`
             this.history += result;
+            this.xp += xp;
+            this.token += token;
             break;
         case 'DEFEATED':
             [self] = actors;
@@ -57,9 +61,8 @@ combatMonitor.Notify = function(msg) {
 }
 combatMonitor.finish = function(monsters) {
     const data = new Map();
-    data.set("combat", this.history);
-    data.set("monsters", monsters);
-    this.history = '';
+    const output = `Ok... you got ${this.xp} 🥇 and ${this.token} 🦷`
+    data.set("result", output);
     this.Update(data);
 }
 combatMonitor.draw = function(monsters) {
@@ -72,11 +75,13 @@ combatMonitor.clear = function() {
     const data = new Map();
     data.set("combat", "");
     data.set("monsters", "");
+    data.set("result", "Ok...")
     this.history = '';
     this.Update(data);
 }
-combatMonitor.Set("combat", document.querySelector("div.combat-content"));
-combatMonitor.Set("monsters", document.querySelector("div.combat-monsters"));
+combatMonitor.Set("combat", document.querySelectorAll("div.combat-content"));
+combatMonitor.Set("result", document.querySelectorAll("button.combat-close"));
+combatMonitor.Set("monsters", document.querySelectorAll("div.combat-monsters"));
 
 let worldMonitor = new Monitor();
 worldMonitor.Notify = function(unlocks) {
@@ -102,8 +107,8 @@ worldMonitor.Notify = function(unlocks) {
     data.set("tower", tower);
     this.Update(data);
 }
-worldMonitor.Set("forest", document.querySelector("button#forest"));
-worldMonitor.Set("cave", document.querySelector("button#cave"));
-worldMonitor.Set("tower", document.querySelector("button#tower"));
+worldMonitor.Set("forest", document.querySelectorAll("button#forest"));
+worldMonitor.Set("cave", document.querySelectorAll("button#cave"));
+worldMonitor.Set("tower", document.querySelectorAll("button#tower"));
 
 export {statMonitor, combatMonitor, worldMonitor};
